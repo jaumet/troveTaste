@@ -1,0 +1,84 @@
+{% extends "trove_base.html" %}
+
+{% block title %}:: TROVE TASTE ::{% endblock %}
+
+{% block myjs %}
+<script type="text/javascript">
+
+    function anim(id,top, left ){
+        $(id).animate(
+                {
+                    top:top,
+                    left: left
+                    //width: "70%",
+                    //opacity: 0.4,
+                    //marginLeft: "0.6in",
+                    //fontSize: "3em",
+                    //borderWidth: "10px"
+                }, 2500 );
+    };
+    $(document).ready(function(){
+
+        // Animation functions: initial colocation
+        anim("#num-map",150,175);
+        anim("#num-book",225,75);
+        anim("#num-music",300,75);
+        anim("#num-people",375,125);
+        anim("#num-newspaper",400,290);
+        anim("#num-article",150,450);
+        anim("#num-list",375,450);
+        anim("#num-collection",225,575);
+        anim("#num-picture",300,575);
+        anim("#total-records",250,275);
+
+        // ajax call
+        $("#do").bind('click', function () {
+        //function send_query() {
+            var query = $("#query").val();
+            $.get("/test/"+query+"/", function(data) {
+                coming_result= data.fact_note;
+                $('#result').append(coming_result);
+            });
+        });
+
+    });
+</script>
+{% endblock myjs %}
+
+{% block mycss %}
+<style type="text/css">
+    html {font-family: "DejaVu Sans",Verdana,serif;}
+    html {background-color: #000000; ;color: #00ff20;font-weight: normal;}
+    a {color:#ffffff;marg}
+
+    #overview{height:400px;width:750px;border:1px solid red;}
+    .all-zones, .zone {position:absolute;top:-50px;width:175px;border: 1px solid red;padding:5px;margin:1px;}
+    #total-records {;top:100px;left:100px;}
+    .zone {width:100px;}
+
+</style>
+{% endblock mycss %}
+
+{% block content %}
+    <div id="overview">
+        <div id="total-records" class="all-zones">Trove Total Records<br /><b>{{ troveTotalRecords }}</b></div>
+        {% for tt, value in troveTotals.items %}
+        <div id="num-{{tt|safe}}" class="zone">
+            {{tt|safe}}s<br />{{ value }}
+        </div>
+    </div>
+    {% endfor %}
+
+    <hr />
+    <h1>Try searching</h1>
+        {% csrf_token %}
+        <p>Trove query
+        <input type="text" name="query" id="query" />
+        <div id="do">do</div>
+        </p>
+
+    <hr />
+    <div id="result">The query sent was:</div>
+    {{ html_out|safe }}
+
+{% endblock content %}

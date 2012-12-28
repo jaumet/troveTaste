@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <!--<link rel="stylesheet" type="text/css" href="http://media.nairobi-conversations.org/css/nc.css" />-->
+    <!--<link rel="alternate" type="application/rss+xml"  href="http://media.nairobi-conversations.org/php/rss.php" title="Your title">-->
+    <script src="http://localhost/trove_media/static/jquery.js"></script>
+    {% block myjs %}{% endblock %}
+    {% block mycss %}{% endblock %}
+</head>
+
+<body>
+<div id="container">
+    <h1>Welcome to Trove taste interface</h1>
+    <!--    <div class="roundbox">-->
+    <div id="navbar">
+        <p><a href="/">home</a> - <a href="/whatsin/">what's in Trv</a> - <a href="/whatsnotin/">what's not in Trv</a> - <a href="/about/">about</a></p>
+    </div>
+
+    {% block content %}{% endblock %}
+
+</div>
+</body>
+</html>
