@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 #from django.views.decorators.csrf import csrf_protect
 #from django.template import RequestContext
+from django.utils import simplejson
 from trove_txt.models import Queries
 
 class configs:
@@ -37,16 +38,41 @@ def test(request):
 
     return render_to_response('test.html', {'myvar': myvar})
 
-from django.utils import simplejson
-
-def trove_query(request, fact_id):
-    message = {"fact_type": "", "fact_note": ""}
+def trove_query(request, query):
     if request.is_ajax():
-        message['fact_note'] = "Ths comes from python, and the query was: <b>"+fact_id+"</b>"
+        import json
+        #import xmltodict
+        import urllib2
+        #from pprint import pprint
+
+        # Building API url:
+        base = 'http://api.trove.nla.gov.au/result?' # fix value!
+        mykey = "key=mljedjjo4e7om4l7" # fix value!
+        amp = '&'
+        zone = 'zone=all'
+        encoding = 'encoding=json' # fix value!
+        q = 'q='+query
+
+        url = base+mykey+amp+zone+amp+encoding+amp+q
+
+        # getting the JSON file
+        s = urllib2.urlopen(url)
+        data = json.load(s)
+        # Transforming JSON to JSON
+        #>>> json["response"]["zone"][0]["name"]
+        #'people'
+        #>>> json["response"]["zone"][0]["records"]["total"]
+        myjson = []
+        for zone in data["response"]["zone"]:
+            myjson.append({"name":str(zone["name"]), "total":int(zone["records"]["total"])})
+        myjson = str(myjson)
+        myjson = myjson.replace("\'", "\"")
+
     else:
-        message = "You're the lying type, I can just tell."
-    json = simplejson.dumps(message)
-    return HttpResponse(json, mimetype='application/json')
+        myjson = "Sorry this ,ethod is not allowed!"
+    #json = simplejson.dumps(message)
+    #return HttpResponse(json, mimetype='application/json')
+    return HttpResponse(myjson, mimetype='application/json')
 
 def get(request):
 

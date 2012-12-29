@@ -31,13 +31,16 @@
         anim("#num-picture",300,575);
         anim("#total-records",250,275);
 
-        // ajax call
+        // Calling JSON results
         $("#do").bind('click', function () {
-        //function send_query() {
             var query = $("#query").val();
-            $.get("/test/"+query+"/", function(data) {
-                coming_result= data.fact_note;
-                $('#result').append(coming_result);
+            $.getJSON("/test/"+query+"/", function(data) {
+                coming_result= "coming: "+data.length+" items";
+                alert("coming: "+data.length+" items");
+                $.each(data, function(i, n){
+                    alert("Name: " + n.name + ", total: " + n.total);
+                });
+                $('#result').append("ADDED: "+coming_result);
             });
         });
 

@@ -25,5 +25,5 @@ urlpatterns = patterns('',
     #url(r'^get$|^get/$', 'trove_txt.views.get'),
 
     # Process a quiz guess
-    url(r'^test/(?P<fact_id>.*)/$', 'trove_txt.views.trove_query')
+    url(r'^test/(?P<query>.*)/$', 'trove_txt.views.trove_query')
 )
