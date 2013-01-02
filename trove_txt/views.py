@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 #from django.views.decorators.csrf import csrf_protect
 #from django.template import RequestContext
-from django.utils import simplejson
+#from django.utils import simplejson
 from trove_txt.models import Queries
 
 class configs:
@@ -33,6 +33,9 @@ def index(request):
     troveTotals = configs.troveTotals
     return render_to_response('index.html', {'troveTotalRecords': troveTotalRecords, 'troveTotals': troveTotals})
 
+def cercle(request):
+    return render_to_response('testcercles.html')
+
 def test(request):
     myvar = "this is my silly var."
 
@@ -41,9 +44,9 @@ def test(request):
 def trove_query(request, query):
     if request.is_ajax():
         import json
-        #import xmltodict
         import urllib2
-        #from pprint import pprint
+        import math
+        from operator import itemgetter
 
         # Building API url:
         base = 'http://api.trove.nla.gov.au/result?' # fix value!
@@ -58,20 +61,32 @@ def trove_query(request, query):
         # getting the JSON file
         s = urllib2.urlopen(url)
         data = json.load(s)
-        # Transforming JSON to JSON
+        # Transforming troveJSON to myJSON
         #>>> json["response"]["zone"][0]["name"]
         #'people'
         #>>> json["response"]["zone"][0]["records"]["total"]
         myjson = []
         for zone in data["response"]["zone"]:
-            myjson.append({"name":str(zone["name"]), "total":int(zone["records"]["total"])})
+            myzone = int(zone["records"]["total"])
+            zonetotal = configs.troveTotals[zone["name"]]
+            permil = int((myzone*1000.0/zonetotal))
+            if myzone>0:
+                logzone = int(round(10*math.log10(myzone)))
+            else:
+                logzone = 0
+            #if permil>0:
+            #    logpermil = int(round(100*math.log10(permil)))
+            #else:
+            #    logpermil = 0
+            # Ponderation: logpermil = [0, 1000]
+            myjson.append({"name":str(zone["name"]), "r":logzone, "x":permil})
+        myjson = sorted(myjson,key=itemgetter('r'), reverse=True)
         myjson = str(myjson)
+        # JSON needs double quotes, not simple ones!
         myjson = myjson.replace("\'", "\"")
 
     else:
-        myjson = "Sorry this ,ethod is not allowed!"
-    #json = simplejson.dumps(message)
-    #return HttpResponse(json, mimetype='application/json')
+        myjson = "Sorry this method is not allowed!"
     return HttpResponse(myjson, mimetype='application/json')
 
 def get(request):
@@ -87,6 +102,7 @@ def get(request):
         import json
         import xmltodict
         import urllib2
+        import math
         #from pprint import pprint
 
         # Building API url:
@@ -107,11 +123,19 @@ def get(request):
         #pprint(values['response']['zone'])
         mytrovetotal = 0
         html_out = "<table>\n"
+        html_out +=  "<tr><td>name</td><td>zonelog</td><td>myzone</td><td> %</td><td> &permil; </td><td>log(&permil)</td></tr>\n"
         for o in values['response']['zone']:
             zonetotal = configs.troveTotals[o['@name']]
             myzone = int(o['records']['@total'])
-            percent = (myzone*1000.0)/zonetotal
-            html_out +=  "<tr><td>"+o['@name']+"</td><td>"+str(myzone)+"</td><td>"+str(percent)+"  &permil; </tg></tr>\n"
+            percent = (myzone*100.0)/zonetotal
+            permil = (myzone*1000.0)/zonetotal
+            if percent>0:
+                log = math.log10(permil)
+                zonelog = math.log10(myzone)
+            else:
+                log = "-"
+                zonelog = "-"
+            html_out +=  "<tr><td>"+o['@name']+"</td><td>"+str(zonelog)+"</td><td>"+str(myzone)+"</td><td>"+str(percent)+" %</td><td>"+str(permil)+"  &permil; </td><td>"+str(log)+"</td></tr>\n"
             mytrovetotal += myzone
         percent = (mytrovetotal*1000.0)/configs.troveTotalRecords
         html_out +=  "<tr><td>Total</td><td>"+str(mytrovetotal)+"</td><td>"+str(percent)+"  &permil; </tg></tr>\n"

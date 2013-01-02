@@ -6,16 +6,16 @@
     <!--<link rel="stylesheet" type="text/css" href="http://media.nairobi-conversations.org/css/nc.css" />-->
     <!--<link rel="alternate" type="application/rss+xml"  href="http://media.nairobi-conversations.org/php/rss.php" title="Your title">-->
     <script src="http://localhost/trove_media/static/jquery.js"></script>
+    <script type="text/javascript" src="http://localhost/trove_media/static/d3.v2.js"></script>
     {% block myjs %}{% endblock %}
     {% block mycss %}{% endblock %}
 </head>
 
 <body>
 <div id="container">
-    <h1>Welcome to Trove taste interface</h1>
     <!--    <div class="roundbox">-->
     <div id="navbar">
-        <p><a href="/">home</a> - <a href="/whatsin/">what's in Trv</a> - <a href="/whatsnotin/">what's not in Trv</a> - <a href="/about/">about</a></p>
+        <p><a href="/"><span id="title">troveTaste</span></a> - <a href="/whatsin/">what's in Trv</a> - <a href="/whatsnotin/">what's not in Trv</a> - <a href="/about/">about</a></p>
     </div>
 
     {% block content %}{% endblock %}

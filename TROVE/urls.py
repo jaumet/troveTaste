@@ -21,8 +21,11 @@ urlpatterns = patterns('',
     # testing
     url(r'^test$|^test/$', 'trove_txt.views.test'),
 
+    # testing
+    url(r'^cercle$|^cercle/$', 'trove_txt.views.cercle'),
+
     # Getting the rsults
-    #url(r'^get$|^get/$', 'trove_txt.views.get'),
+    url(r'^get$|^get/$', 'trove_txt.views.get'),
 
     # Process a quiz guess
     url(r'^test/(?P<query>.*)/$', 'trove_txt.views.trove_query')
