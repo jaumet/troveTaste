@@ -7,13 +7,13 @@
     function draw(data) {
         var fill = d3.scale.category10();
         var w = 960; //canvas width
-        var h = 250; //canvas height
+        var h = 120; //canvas height
         var deg = Math.PI/180;
         var arc = d3.svg.arc()
                 .startAngle(-90*deg)
                 .endAngle(90*deg)
                 .innerRadius(0)
-                .outerRadius(function(d) { return (d.r);})
+                .outerRadius(function(d) { return (d.r/2);})
 
         var vis = d3.select("#chart").append("svg")
                 .data(data)
@@ -29,7 +29,7 @@
                 .attr("transform", function(d) { return "translate(" + d.x + "," + h/2 + ")";})
 
         g.append("path")
-                .style("fill", function(d, i) { return fill(i); })
+                .style("fill", function(d, i) { return d.color; })
                 .style("opacity", 1)
                 .attr("d", arc);
     }
@@ -54,7 +54,7 @@
         anim("#num-book",175,75);
         anim("#num-music",280,75);
         anim("#num-people",375,125);
-        anim("#num-newspaper",400,290);
+        anim("#num-newspaper",400,310);
         anim("#num-article",75,450);
         anim("#num-list",375,475);
         anim("#num-collection",175,575);
@@ -63,39 +63,24 @@
         anim("#search",185,285);
 
         // Calling JSON results
-        $("#do").bind('click', function () {
-            $('#balls').html('<div id="chart"><div id="D3line"></div></div>');
-            var query = $("#query").val();
-            $.getJSON("/test/"+query+"/", function(data) {
-                alert("coming: "+data.length+" items");
-                draw(data);
-            });
-        });
-        // Show search form on keypress
-        //$("#interaction").keypress(function() {
-        //    alert("Handler for .keypress() "+this+" called.");
-        //});
-        /*
-        $.keypress(function() {
-            if ( event.which == 32 ) {
-                if ($("#interaction").css("display", "none")) {
-                //alert("Handler for .keypress() "+this+" called.");
-                anim("#interaction",185,275);
-                anim("#total-records",265,275);
-                $("#interaction").css("display", "block");
-                }
-            }
-        */
-        /*
-        $("#overview").click(function() {
-            if ($("#interaction").css("display", "none")) {
-                //alert("Handler for .keypress() "+this+" called.");
-                anim("#total-records",265,275);
-                //$("#interaction").css("display", "block");
-                anim("#search",185,275);
+        //$("#do").bind('click', function () {
+        $("#query").click(function() {
+            if ($("#query").val() == 'type here') {
+                $("#query").val('');
             }
         });
-        */
+        $("#query").keypress(function(event) {
+            if (event.which == 13) {
+                $('#balls').html('<div id="chart"><div id="D3line"></div></div>');
+                $("#waiting").css("display", "block");
+                var query = $("#query").val();
+                $.getJSON("/test/"+query+"/", function(data) {
+                    alert("coming: "+data.length+" items");
+                    $("#waiting").css("display", "none");
+                    draw(data);
+                });
+            }
+        });
     });
 </script>
 {% endblock myjs %}
@@ -108,7 +93,7 @@
 
     #D3line {background-color: #fff;}
     #search {position:absolute;z-index:20;width:265px;border:0px solid red;}
-    #result {float:left;border:1px solid red;}
+    #result {float:left;border:0px solid red;}
     #title {font-size:20px;font-weight:bold;}
 
     /* Fix colors for each zone Taken from d3.scale.category10() */
@@ -124,50 +109,56 @@
     #total-records {background-color:#7f7f7f;}
 
 
-    #overview{height:500px;width:750px;border:0px solid red;}
-    .all-zones, .zone {position:absolute;top:-50px;color:#fff;border: 1px solid red;padding:10px;margin:1px;text-align:center;}
+    #overview{height:425px;width:750px;border:0px solid red;}
+    .all-zones, .zone {position:absolute;top:-50px;color:#fff;border: 0px solid red;padding:10px;margin:1px;text-align:center;}
     .all-zones {width:175px;}
     .zone {width:100px;}
     #total-records {;top:0;left:0;}
 
     /* Some round corners */
-    #query, .all-zones, .zone {border-radius: 34px;
+    #query, .all-zones, .zone {
+        border-radius: 34px;
         -moz-border-radius: 34px;
         -webkit-border-radius: 34px;
         border: 0px solid #800000;
     }
 
-    /*
-    #interaction {
-        display:none;
-        position:absolute;
-        opacity:.9;
-        background-color:grey;
-        width:98%;
-        height:98%;
-        border:5px solid #000000;
-        top:0;
-        left:0;
-        z-index:10;
-        font-weight: bold;
+    #query {
+        height:30px;
+        width:175px;
+        font-size:24px;
+        color: grey;
+        padding:5px;
     }
-    */
 
+    #waiting {
+        position:absolute;
+        top: 110px;
+        left: 340px;
+        width:60px;
+        height:60px;
+        display:none;
+        background: url('http://localhost/trove_media/static/small_white_ajax_loader.gif');
+        z-index:20;
+    }
+    #chart {
+        height:90px;
+    }
     #balls {
         position:relative;
         top:0px;
         left:0px;
-        width:1100px;
-        height:190px;
-        border:1px solid green;
+        width:1000px;
+        height:120px;
+        border:0px solid green;
     }
     #D3line {
         position:relative;
         z-index:0;
-        top:146px;
+        top:83px;
         left:0px;
         width:1000px;
-        height:21px;
+        height:24px;
         background: url('http://localhost/trove_media/static/myline.png');
     }
 </style>
@@ -190,12 +181,11 @@
 
     <div id="search">
         {% csrf_token %}
-        <input type="text" name="query" id="query" />
-        <div id="do" style="color:white;">do</div>
+        <input type="text" name="query" id="query" value="type here"/>
+        <!--div id="do" style="color:white;">do</div>-->
     </div>
-
+    <div id="waiting"></div>
     <div id="result">
-        here I'm: {{ html_out|safe }}<br />
         <div id="balls">
             <div id="chart">
                 <div id="D3line"></div>

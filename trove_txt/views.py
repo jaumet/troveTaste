@@ -18,7 +18,30 @@ class configs:
         "people": 913785,
         "collection": 532151,
         "map": 389341,
-        "list": 19429}
+        "list": 19429
+    }
+    troveColors = {
+        "article": "#ff7f0e",
+        "newspaper": "#2ca02c",
+        "book": "#d62728",
+        "picture": "#bcbd22",
+        "music": "#9467bd",
+        "people": "#8c564b",
+        "collection": "#17becf",
+        "map": "#1f77b4",
+        "list": "#e377c2"
+    }
+
+    #num-map {background-color:;}
+    #num-book {background-color:;}
+    #num-music {background-color:;}
+    #num-people {background-color:;}
+    #num-newspaper {background-color:;}
+    #num-article {background-color:;}
+    #num-list {background-color:;}
+    #num-collection {background-color:;}
+    #num-picture {background-color:;}
+    #total-records {background-color:#7f7f7f;}
 
     ##  troveTotalRecords
     troveTotalRecords = sum(troveTotals.values())
@@ -79,7 +102,7 @@ def trove_query(request, query):
             #else:
             #    logpermil = 0
             # Ponderation: logpermil = [0, 1000]
-            myjson.append({"name":str(zone["name"]), "r":logzone, "x":permil})
+            myjson.append({"name":str(zone["name"]), "color":str(configs.troveColors[zone["name"]]),  "r":logzone, "x":permil})
         myjson = sorted(myjson,key=itemgetter('r'), reverse=True)
         myjson = str(myjson)
         # JSON needs double quotes, not simple ones!
@@ -109,11 +132,13 @@ def get(request):
         base = 'http://api.trove.nla.gov.au/result?' # fix value!
         mykey = "key=mljedjjo4e7om4l7" # fix value!
         amp = '&'
+        s = 's=0'
+        n = 'n=0'
         zone = 'zone=all'
         encoding = 'encoding=xml' # fix value!
         q = 'q='+query
 
-        url = base+mykey+amp+zone+amp+encoding+amp+q
+        url = base+mykey+amp+zone+amp+s+amp+n+amp+encoding+amp+q
 
         # getting the XML file
         s = urllib2.urlopen(url)
