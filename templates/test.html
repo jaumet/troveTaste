@@ -16,7 +16,7 @@
 
 <form action="/get" method="GET">
     {% csrf_token %}
-    <label for="query">Trove query</label> <input type="text" name="query" id="query" value="start typing ..." /> <input type="submit" value="do" />
+    <label for="query">Trove query</label> <input type="text" name="query" id="query" value="" /> <input type="submit" value="do" />
 </form>
 <hr />
 <p>The query sent was: <strong>{{ query }}</strong></p>

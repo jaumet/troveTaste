@@ -65,6 +65,10 @@ def test(request):
     return render_to_response('test.html', {'myvar': myvar})
 
 def trove_query(request, query):
+    # Encoding query:
+    from urllib import pathname2url
+    query = pathname2url(query);
+
     if request.is_ajax():
         import json
         import urllib2
@@ -122,6 +126,10 @@ def get(request):
     if request.GET['query'] and request.GET['query'] not in configs.stopWords:
         query = request.GET['query']
 
+        # Encoding query string
+        from urllib import pathname2url
+        query = pathname2url(query);
+
         import json
         import xmltodict
         import urllib2
@@ -134,7 +142,7 @@ def get(request):
         amp = '&'
         s = 's=0'
         n = 'n=0'
-        zone = 'zone=all'
+        zone = 'zone=book%2Cmap'
         encoding = 'encoding=xml' # fix value!
         q = 'q='+query
 
