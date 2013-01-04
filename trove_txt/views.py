@@ -59,6 +59,9 @@ def index(request):
 def cercle(request):
     return render_to_response('testcercles.html')
 
+def about(request):
+    return render_to_response('about.html')
+
 def test(request):
     myvar = "this is my silly var."
 
