@@ -109,12 +109,14 @@ def trove_query(request, query):
         myjson = str(myjson)
         # JSON needs double quotes, not simple ones!
         myjson = myjson.replace("\'", "\"")
-        # Saving query + results to the ddbb:
-        mydict = dict(map(lambda x: (x["name"], x["number"]), myjson2save))
-        mydict["total"]=sum(mydict.values())
-        mydict["query"]=query
-        m = Queries(**mydict)
-        m.save()
+        # Saving query + results to the ddbb ONLY if the query is not already there
+        m = Queries.objects.filter(query=query)
+        if len(m) == 0:
+            mydict = dict(map(lambda x: (x["name"], x["number"]), myjson2save))
+            mydict["total"]=sum(mydict.values())
+            mydict["query"]=query
+            m = Queries(**mydict)
+            m.save()
     else:
         myjson = "Sorry this page is not directly accessible!"
     return HttpResponse(myjson, mimetype='application/json')
