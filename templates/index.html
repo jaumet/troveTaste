@@ -46,7 +46,7 @@
                 {
                     top:top,
                     left: left,
-                    width: "40px",
+                    width: "45px",
                     //opacity: 0.4,
                     //marginLeft: "0.6in",
                     fontSize: "8px"
@@ -54,15 +54,15 @@
                 }, 500 );
     };
     function recolocation() {
-        anim2("#num-map",50,165);
-        anim2("#num-book",50,95);
-        anim2("#num-music",50,25);
-        anim2("#num-people",50,235);
-        anim2("#num-newspaper",50,305);
-        anim2("#num-article",50,375);
-        anim2("#num-list",50,445);
+        anim2("#num-newspaper",50,25);
+        anim2("#num-article",50,95);
+        anim2("#num-book",50,165);
+        anim2("#num-picture",50,235);
+        anim2("#num-music",50,305);
+        anim2("#num-people",50,375);
+        anim2("#num-map",50,445);
         anim2("#num-collection",50,515);
-        anim2("#num-picture",50,585);
+        anim2("#num-list",50,585);
         anim("#total-records",100,25);
         anim("#search",110,260);
         $("#result").css("display","block").css("position", "absolute").css("top", "225px").css("left", "10");
@@ -95,7 +95,10 @@
                 $('#balls').html('<div id="chart"><div id="D3line"></div></div>');
                 $("#waiting").css("display", "block");
                 var query = $("#query").val();
-                $.getJSON("trove/test/"+query+"/", function(data) {
+		// APACHE WSGI
+                //$.getJSON("/trove/test/"+query+"/", function(data) {
+		// Django dev server
+                $.getJSON("test/"+query+"/", function(data) {
                     alert("coming: "+data.length+" items");
                     $("#waiting").css("display", "none");
                     recolocation();
@@ -195,6 +198,11 @@
         </div>
     </div>
     {% endfor %}
+
+    <!--
+    <div id="interaction">
+    </div>
+    -->
 
     <div id="search">
         {% csrf_token %}

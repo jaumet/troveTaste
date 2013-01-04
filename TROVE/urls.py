@@ -24,9 +24,14 @@ urlpatterns = patterns('',
     # testing
     url(r'^cercle$|^cercle/$', 'trove_txt.views.cercle'),
 
-    # Getting the rsults
+    # Getting the results
     url(r'^get$|^get/$', 'trove_txt.views.get'),
 
     # Process a quiz guess
-    url(r'^trove/test/(?P<query>.*)/$', 'trove_txt.views.trove_query')
+    ## APACHE wsgi: 
+    url(r'^test/(?P<query>.*)/$', 'trove_txt.views.trove_query'),
+
+    # about page
+    url(r'^about$|^about/$', 'trove_txt.views.about')
+
 )
