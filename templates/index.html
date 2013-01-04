@@ -95,7 +95,7 @@
                 $('#balls').html('<div id="chart"><div id="D3line"></div></div>');
                 $("#waiting").css("display", "block");
                 var query = $("#query").val();
-                $.getJSON("/trove/test/"+query+"/", function(data) {
+                $.getJSON("trove/test/"+query+"/", function(data) {
                     alert("coming: "+data.length+" items");
                     $("#waiting").css("display", "none");
                     recolocation();
@@ -195,11 +195,6 @@
         </div>
     </div>
     {% endfor %}
-
-    <!--
-    <div id="interaction">
-    </div>
-    -->
 
     <div id="search">
         {% csrf_token %}

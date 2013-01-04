@@ -93,6 +93,8 @@ def trove_query(request, query):
         #'people'
         #>>> json["response"]["zone"][0]["records"]["total"]
         myjson = []
+        myjson2save = []
+        mydict = {}
         for zone in data["response"]["zone"]:
             myzone = int(zone["records"]["total"])
             zonetotal = configs.troveTotals[zone["name"]]
@@ -101,19 +103,20 @@ def trove_query(request, query):
                 logzone = int(round(10*math.log10(myzone)))
             else:
                 logzone = 0
-            #if permil>0:
-            #    logpermil = int(round(100*math.log10(permil)))
-            #else:
-            #    logpermil = 0
-            # Ponderation: logpermil = [0, 1000]
             myjson.append({"name":str(zone["name"]), "color":str(configs.troveColors[zone["name"]]),  "r":logzone, "x":permil})
+            myjson2save.append({"name":str(zone["name"]), "number": myzone})
         myjson = sorted(myjson,key=itemgetter('r'), reverse=True)
         myjson = str(myjson)
         # JSON needs double quotes, not simple ones!
         myjson = myjson.replace("\'", "\"")
-
+        # Saving query + results to the ddbb:
+        mydict = dict(map(lambda x: (x["name"], x["number"]), myjson2save))
+        mydict["total"]=sum(mydict.values())
+        mydict["query"]=query
+        m = Queries(**mydict)
+        m.save()
     else:
-        myjson = "Sorry this method is not allowed!"
+        myjson = "Sorry this page is not directly accessible!"
     return HttpResponse(myjson, mimetype='application/json')
 
 def get(request):
