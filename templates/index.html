@@ -39,7 +39,7 @@
                 {
                     top:top,
                     left: left
-                }, 2500 );
+                }, 1000 );
     };
     function anim2(id,top, left ){
         $(id).animate(
@@ -51,7 +51,7 @@
                     //marginLeft: "0.6in",
                     fontSize: "8px"
                     //borderWidth: "10px"
-                }, 500 );
+                }, 1000 );
     };
     function recolocation() {
         anim2("#num-newspaper",50,25);
@@ -66,7 +66,7 @@
         anim("#total-records",100,25);
         anim("#search",110,260);
         //anim2("#waiting",100,460)
-        $("#result").css("display","block").css("position", "absolute").css("top", "225px").css("left", "10");
+        $("#result").css("display","block").css("position", "absolute").css("top", "135px").css("left", "10");
     }
 
     $(document).ready(function(){
@@ -177,6 +177,7 @@
         width:1000px;
         height:120px;
         border:0px solid green;
+        /*overflow:scroll;*/
     }
     #D3line {
         position:relative;
@@ -186,6 +187,16 @@
         width:1000px;
         height:24px;
         background: url('http://localhost/trove_media/static/myline.png');
+    }
+    text {
+        font: 20px sans-serif;
+        pointer-events: none;
+    }
+
+    text.shadow {
+        stroke: red;
+        stroke-width: 3px;
+        stroke-opacity: .8;
     }
 </style>
 {% endblock mycss %}
