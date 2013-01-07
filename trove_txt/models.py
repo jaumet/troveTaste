@@ -24,6 +24,6 @@ class Queries(models.Model):
     map = models.IntegerField(default=0)
     list = models.IntegerField(default=0)
     total = models.IntegerField(default=0)
-    test_date = models.DateField(default=datetime.date.today, null=True)
+    test_date = models.DateField(default=datetime.date.today, auto_now_add=True)
     def __unicode__(self):
         return '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s' % (self.query, self.article, self.newspaper, self.book, self.picture, self.music, self.people, self.collection, self.map, self.list, self.total)

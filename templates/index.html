@@ -11,6 +11,7 @@
         var deg = Math.PI/180;
         var arc = d3.svg.arc()
                 .startAngle(-90*deg)
+
                 .endAngle(90*deg)
                 .innerRadius(0)
                 .outerRadius(function(d) { return (d.r/2);})
@@ -99,11 +100,18 @@
 		// APACHE WSGI
                 //$.getJSON("/trove/test/"+query+"/", function(data) {
 		// Django dev server
+
                 $.getJSON("test/"+query+"/", function(data) {
                     alert("coming: "+data.length+" items");
                     $("#waiting").css("display", "none");
                     recolocation();
                     draw(data);
+                });
+
+                $.get("comparing/"+query+"/", function(data1) {
+                    alert("Comparing...");
+                    //$("#waiting").css("display", "none");
+                    $("#comparing").html(data1);
                 });
             }
         });
@@ -188,16 +196,15 @@
         height:24px;
         background: url('http://localhost/trove_media/static/myline.png');
     }
-    text {
+    #comparing {
         font: 20px sans-serif;
-        pointer-events: none;
+        color:white;
+        border: 1px solid red;
+    }
+    #comparing tr td {
+        border: 1px solid red;
     }
 
-    text.shadow {
-        stroke: red;
-        stroke-width: 3px;
-        stroke-opacity: .8;
-    }
 </style>
 {% endblock mycss %}
 
@@ -230,4 +237,6 @@
         </div>
     </div>
 
+    <div id="comparing">
+    </div>
 {% endblock content %}

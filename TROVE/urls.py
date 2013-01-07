@@ -27,9 +27,12 @@ urlpatterns = patterns('',
     # Getting the results
     url(r'^get$|^get/$', 'trove_txt.views.get'),
 
-    # Process a quiz guess
+    # JSON responses:
     ## APACHE wsgi: 
     url(r'^test/(?P<query>.*)/$', 'trove_txt.views.trove_query'),
+
+    ## Comparation data from ddbb
+    url(r'^comparing/(?P<query>.*)/$', 'trove_txt.views.comparing'),
 
     # about page
     url(r'^about$|^about/$', 'trove_txt.views.about')
