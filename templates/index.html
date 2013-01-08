@@ -71,7 +71,7 @@
     }
     function gettable(query) {
         $.get("comparing/"+query+"/", function(data1) {
-            alert("Comparing...");
+            //alert("Comparing...");
             //$("#waiting").css("display", "none");
             $("#comparing").html(data1);
             $("#comparing").css("display", "block");
@@ -111,7 +111,7 @@
 		// Django dev server
 
                 $.getJSON("test/"+query+"/", function(data) {
-                    alert("coming: "+data.length+" items");
+                    //alert("coming: "+data.length+" items");
                     $("#waiting").css("display", "none");
                     recolocation();
                     draw(data);
