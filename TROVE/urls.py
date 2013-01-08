@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -35,6 +36,9 @@ urlpatterns = patterns('',
     url(r'^comparing/(?P<query>.*)/$', 'trove_txt.views.comparing'),
 
     # about page
-    url(r'^about$|^about/$', 'trove_txt.views.about')
+    url(r'^about$|^about/$', 'trove_txt.views.about'),
+
+    # Media static files:
+    url(r'^trove_txt/media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT})
 
 )

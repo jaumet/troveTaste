@@ -22,8 +22,9 @@
 
 {% block content %}
 <h1>About</h1>
-<p>troveTaste is an experiment about digital archives overview. It uses the Trove API, the API of the big archive of the National Library of Australia.</p>
-<p>It contents almost 250Milion items, grouped in 9 categories:</p>
+<p>troveTaste is an experiment about digital archives overview. WHen you visit for the first time a digital archive it use to be a lack of explanations about what actually the archive contents are. TroveTaste is a very small effort in this direction: iproposes some adies on giving you a taste of an archive. The more you search, the more you will see what the archive contents are about.</p>
+    <p>It uses the Trove API, the API of the big archive of the <a href="http://trove.nla.gov.au/">National Library of Australia</a>.</p>
+<p>It contents almost 250 Million items, grouped in 9 categories:</p>
 <ul>
 <li>pictures: 4903410</li> 
 <li>maps: 389341</li>
@@ -36,9 +37,22 @@
 <li>collections: 53215</li>
 <li>Trove Total Records: 247732527</li> 
 </ul>
-<p>troveTaste is developed by Jaume Nualart as part of the PhD in COmmunication in the University of Canberra (DES2012-JAN2013).</p>
+<p>troveTaste is developed by Jaume Nualart as part of the PhD in Communication in the University of Canberra (Des2012-Jan2013).</p>
 
 <h2>How it works? WHat it does?</h2>
-<p>...</p>
+<p>You can search for works (It uses an English-stop-words list, to avoid empty words). TroveTaste will give you 2 main outputs:<p>
+<ol><li><b> A semi-cercles representation</b> showing the relative/absolute importante of the query in the archive.</li>
+    <p>&nbsp;</p>
+    <img style="width:80%;" src="http://localhost/trove_media/media/Semicercle-screenshot.png" /><br />
+    <p style="margin-left:50px;"><i>Fig 1.- semicercler representation of relative/absolut quantities, made with D3js</i></ p>
+<p>&nbsp;</p>
+    <li><b> A table comparing</b> your query other queries in the troveTaste data base, grouped by the 9 trove categories</li></ol>
 
+<h2>Code & credits</h2>
+    <p>This is a <b>django</b> app and it also uses the javascript libraries: <b>jquery</b>, <b>D3</b>. The cose is in my github: <a href="http://github.com/jaumet/troveTaste">http://github.com/jaumet/troveTaste</a></p>
+    <p>Idea & code: Jaume Nualart (@jaumetet). Please send comments to jaume AT nualart.cat</p>
+    <p>Canberra, Australia. Des2012-Jan2013</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
 {% endblock content %}
