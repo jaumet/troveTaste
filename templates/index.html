@@ -106,16 +106,19 @@
                 $("#comparing").css("display", "none");
                 $("#waiting").css("display", "block");
                 var query = $("#query").val();
-		// APACHE WSGI
+        		// APACHE WSGI
                 //$.getJSON("/trove/test/"+query+"/", function(data) {
-		// Django dev server
-
+		        // Django dev server
                 $.getJSON("test/"+query+"/", function(data) {
-                    //alert("coming: "+data.length+" items");
+                    //alert("coming: "+data.message.length+" items");
                     $("#waiting").css("display", "none");
-                    recolocation();
-                    draw(data);
-                    gettable(query);
+                    if (!data.message) {
+                        recolocation();
+                        draw(data);
+                        gettable(query);
+                    } else {
+                        alert(data.message)
+                    }
                 });
             }
         });

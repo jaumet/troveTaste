@@ -57,7 +57,7 @@ def test(request):
 
 
 def comparing(request, query):
-    if request.is_ajax() or 1==1:
+    if request.is_ajax():
         import json
         comparingList = []
         query = pathname2url(query)
@@ -156,9 +156,9 @@ def trove_query(request, query):
                 m = Queries(**mydict)
                 m.save()
         else:
-            myjson = "Sorry this page is not directly accessible!"
+            myjson = '{"message": "Sorry this page is not directly accessible!"}'
     else:
-        myjson = "Sorry, this query is not allowed"
+        myjson = '{"message": "Sorry, this query is not allowed"}'
     return HttpResponse(myjson, mimetype='application/json')
 
 def get(request):
