@@ -69,7 +69,15 @@
         //anim2("#waiting",100,460)
         $("#result").css("display","block").css("position", "absolute").css("top", "135px").css("left", "10");
     }
+    function gettable(query) {
+        $.get("comparing/"+query+"/", function(data1) {
+            alert("Comparing...");
+            //$("#waiting").css("display", "none");
+            $("#comparing").html(data1);
+            $("#comparing").css("display", "block");
+        });
 
+    }
     $(document).ready(function(){
 
         // Animation functions: initial colocation
@@ -95,6 +103,7 @@
         $("#query").keypress(function(event) {
             if (event.which == 13) {
                 $('#balls').html('<div id="chart"><div id="D3line"></div></div>');
+                $("#comparing").css("display", "none");
                 $("#waiting").css("display", "block");
                 var query = $("#query").val();
 		// APACHE WSGI
@@ -106,12 +115,7 @@
                     $("#waiting").css("display", "none");
                     recolocation();
                     draw(data);
-                });
-
-                $.get("comparing/"+query+"/", function(data1) {
-                    alert("Comparing...");
-                    //$("#waiting").css("display", "none");
-                    $("#comparing").html(data1);
+                    gettable(query);
                 });
             }
         });
@@ -126,8 +130,8 @@
     a {color:#fff;marg}
 
     #D3line {background-color: #fff;}
-    #search {position:absolute;z-index:20;width:265px;border:0px solid red;}
-    #result {display:none;float:left;border:0px solid red;}
+    #search {position:absolute;z-index:20;width:265px;border:0 solid red;}
+    #result {display:none;float:left;border:0 solid red;}
     #title {font-size:20px;font-weight:bold;}
 
     /* Fix colors for each zone Taken from d3.scale.category10() */
@@ -197,12 +201,22 @@
         background: url('http://localhost/trove_media/static/myline.png');
     }
     #comparing {
+        display:none;
+        position: absolute;
+        top:240px;
         font: 20px sans-serif;
         color:white;
-        border: 1px solid red;
+        border: 0 solid red;
     }
     #comparing tr td {
-        border: 1px solid red;
+        border: 0 solid red;
+        text-align: center;
+        color:grey;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+    #comparing tr td h1, #comparing tr td h3 {
+        color:white;
     }
 
 </style>

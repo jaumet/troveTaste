@@ -68,10 +68,10 @@ def comparing(request, query):
             myzone = "int(Queries.objects.filter(query='"+query+"')[0]."+zone+")"
             myzone = eval(myzone)
             # Getting 3 queries under
-            my3under = "Queries.objects.values('query','"+zone+"').order_by('-"+zone+"').filter("+zone+"__lt="+str(myzone)+")[:3]"
+            my3under = "Queries.objects.values('query','"+zone+"').order_by('-"+zone+"').filter("+zone+"__lt="+str(myzone)+")[:5]"
             my3under = eval(my3under)
             # Getting the 2 queries over
-            my3over = "Queries.objects.values('query','"+zone+"').order_by('"+zone+"').filter("+zone+"__gt="+str(myzone)+")[:3]"
+            my3over = "Queries.objects.values('query','"+zone+"').order_by('"+zone+"').filter("+zone+"__gt="+str(myzone)+")[:5]"
             my3over = eval(my3over)
             ## FIXME NEEDS REVERSE ORDER FOR my3over
 
@@ -80,10 +80,10 @@ def comparing(request, query):
                 mystr = ''
                 # A trick for the order of the compared items:
                 if which == "over":
-                    myrange = range(2, -1,-1)
+                    myrange = range(4, -1,-1)
                 else:
-                    myrange = range(0,3)
-                    
+                    myrange = range(0,5)
+
                 for f in myrange:
                 #for f in range(len(myvalues)):
                     try:
@@ -97,7 +97,7 @@ def comparing(request, query):
                 return mystr
 
             myrow += '<tr>'+do_tr(my3over, zone, "over")+'<td><h3>'+zone+'<br />('+str(myzone)+')</h3></td>'+do_tr(my3under, zone, "under")+'</tr>'
-        myTable = '<table><tr><td></td><td><h2>More tasty</h2></td><td></td><td><h1>'+query+'</h1></td><td></td><td><h2>less tasty</h2></td><td></td></tr>'+myrow+'</table>'
+        myTable = '<table><tr><td></td><td></td><td><h2>More tasty</h2></td><td></td><td></td><td><h1>'+query+'</h1></td><td></td><td><h2>less tasty</h2></td><td></td><td></td><td></td></tr>'+myrow+'</table>'
         #'UNDER:<table>'+under+'</tatle><hr />OVER<table'+over+'</table>'
 
 
