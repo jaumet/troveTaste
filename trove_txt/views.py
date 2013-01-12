@@ -8,6 +8,7 @@ class configs:
     ## CONFIGS
     ## trove totals per zone:
     troveTotals = {
+	"total": 247732527,
         "article": 142458865,
         "newspaper": 78533033,
         "book": 17428770,
@@ -20,6 +21,7 @@ class configs:
     }
 
     troveColors = {
+	"total": "grey",
         "article": "#ff7f0e",
         "newspaper": "#2ca02c",
         "book": "#d62728",
@@ -62,8 +64,10 @@ def comparing(request, query):
         comparingList = []
         query = pathname2url(query)
         myrow = ''
-        # List of zone:
-        for zone in configs.troveTotals.keys():
+        # List of zones:
+	from operator import itemgetter
+	myDictZones = sorted(configs.troveTotals.items(), key=itemgetter(1), reverse=True)
+        for zone, v in myDictZones:
             # Getting the zone value for the this query
             myzone = "int(Queries.objects.filter(query='"+query+"')[0]."+zone+")"
             myzone = eval(myzone)
@@ -73,7 +77,6 @@ def comparing(request, query):
             # Getting the 2 queries over
             my3over = "Queries.objects.values('query','"+zone+"').order_by('"+zone+"').filter("+zone+"__gt="+str(myzone)+")[:5]"
             my3over = eval(my3over)
-            ## FIXME NEEDS REVERSE ORDER FOR my3over
 
             def do_tr(myvalues, zone, which):
                 # Building the HTML table output
@@ -85,9 +88,7 @@ def comparing(request, query):
                     myrange = range(0,5)
 
                 for f in myrange:
-                #for f in range(len(myvalues)):
                     try:
-                    #mystr += '<td>'+str(myvalues[f]["query"])+'->'+str(myvalues[f])+'</td>'
                         mystr += '<td>'+str(myvalues[f]["query"])+'<br />'+str(myvalues[f][zone])+'</td>'
                     except:
                         if which == "over":
@@ -96,12 +97,8 @@ def comparing(request, query):
                             mystr += '<td>&nbsp;</td>'
                 return mystr
 
-            myrow += '<tr>'+do_tr(my3over, zone, "over")+'<td><h3>'+zone+'<br />('+str(myzone)+')</h3></td>'+do_tr(my3under, zone, "under")+'</tr>'
+            myrow += '<tr>'+do_tr(my3over, zone, "over")+'<td><h3 style="color:'+configs.troveColors[zone]+';"><a href="http://trove.nla.gov.au/result?&q-type0=all&q-term0='+query+'&q-field1=title%3A&q-type1=all&q-field2=creator%3A&q-type2=all&q-field3=subject%3A&q-type3=all&l-advformat='+configs.troveColors[zone]+'" class="ext">'+zone+'</a><br />('+str(myzone)+')</h3></td>'+do_tr(my3under, zone, "under")+'</tr>'
         myTable = '<table><tr><td></td><td></td><td><h2>More tasty</h2></td><td></td><td></td><td><h1>'+query+'</h1></td><td></td><td><h2>less tasty</h2></td><td></td><td></td><td></td></tr>'+myrow+'</table>'
-        #'UNDER:<table>'+under+'</tatle><hr />OVER<table'+over+'</table>'
-
-
-
     else:
         myTable = "Sorry, this query is not allowed"
     return HttpResponse(myTable, mimetype='application/html')
