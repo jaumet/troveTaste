@@ -104,6 +104,8 @@
             if (event.which == 13) {
                 $('#balls').html('<div id="chart"><div id="D3line"></div></div>');
                 $("#comparing").css("display", "none");
+		//anim("#waiting",170,400);
+                $("#balls").css("display", "none");
                 $("#waiting").css("display", "block");
                 var query = $("#query").val();
         		// APACHE WSGI
@@ -112,6 +114,7 @@
                 $.getJSON("test/"+query+"/", function(data) {
                     //alert("coming: "+data.message.length+" items");
                     $("#waiting").css("display", "none");
+                    $("#balls").css("display", "block");
                     if (!data.message) {
                         recolocation();
                         draw(data);
@@ -129,7 +132,7 @@
 {% block mycss %}
 <style type="text/css">
     html {font-family: "DejaVu Sans",Verdana,serif;}
-    html {background-color: #000;color: #000000;font-weight: normal;}
+    html {background-color: #212121;color: #fff;font-weight: normal;}
     a {color:#fff;marg}
 
     #D3line {background-color: #fff;}
@@ -178,6 +181,8 @@
         height:60px;
         display:none;
         background: url('http://v.subvideo.tv/trove_media/static/small_white_ajax_loader.gif');
+	background-repeat:no-repeat;
+	background-position:center;
         z-index:20;
     }
     #chart {
