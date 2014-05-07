@@ -70,7 +70,7 @@
         $("#result").css("display","block").css("position", "absolute").css("top", "135px").css("left", "10");
     }
     function gettable(query) {
-        $.get("comparing/"+query+"/", function(data1) {
+        $.get("/trove/comparing/"+query+"/", function(data1) {
             //alert("Comparing...");
             //$("#waiting").css("display", "none");
             $("#comparing").html(data1);
@@ -111,7 +111,7 @@
         		// APACHE WSGI
                 //$.getJSON("/trove/test/"+query+"/", function(data) {
 		        // Django dev server
-                $.getJSON("test/"+query+"/", function(data) {
+                $.getJSON("/trove/test/"+query+"/", function(data) {
                     //alert("coming: "+data.message.length+" items");
                     $("#waiting").css("display", "none");
                     $("#balls").css("display", "block");
@@ -249,7 +249,6 @@
     -->
 
     <div id="search">
-        {% csrf_token %}
         <input type="text" name="query" id="query" value="type here"/>
         <!--div id="do" style="color:white;">do</div>-->
     </div>

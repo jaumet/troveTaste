@@ -8,14 +8,13 @@
 </head>
 <body>
 <h3>Trove overview</h3>
-<p>Trove Total lRecords:&nbsp;<b>{{ troveTotalRecords }}</b></p>
+<p>Trove Total Records:&nbsp;<b>{{ troveTotalRecords }}</b></p>
 <hr />
 <h1>Form</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="/get" method="GET">
-    {% csrf_token %}
+<form action="get" method="GET">
     <label for="query">Trove query</label> <input type="text" name="query" id="query" value="" /> <input type="submit" value="do" />
 </form>
 <hr />

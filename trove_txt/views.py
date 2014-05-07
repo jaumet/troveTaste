@@ -59,7 +59,7 @@ def test(request):
 
 
 def comparing(request, query):
-    if request.is_ajax():
+    if 1: #request.is_ajax():
         import json
         comparingList = []
         query = pathname2url(query)
